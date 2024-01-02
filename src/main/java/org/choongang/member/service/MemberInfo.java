@@ -2,7 +2,7 @@ package org.choongang.member.service;
 
 import lombok.Builder;
 import lombok.Data;
-import org.choongang.entities.Member;
+import org.choongang.member.entities.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
