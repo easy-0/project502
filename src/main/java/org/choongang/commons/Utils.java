@@ -64,6 +64,17 @@ public class Utils {
     public static String getMessage(String code){
         return getMessage(code, null);
     }
+
+    /**
+     * \n or \r\n -> <br>
+     * @param str
+     * @return
+     */
+    public String nl2br(String str) {
+        str = str.replaceAll("\\n","<br>")
+                .replaceAll("\\r","");
+        return str;
+    }
 }
 
 
