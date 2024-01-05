@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta th:if="${siteConfig.siteDescription != null}" name="description" th:content="${siteConfig.siteDescription}">
@@ -24,19 +24,19 @@
 
     <script th:src="@{/common/js/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
     <script th:each="jsFile : ${addCommonScript}"
-            th:src="@{/common/js/${file}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
+            th:src="@{/common/js/{file}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
 
     <script th:src="@{/front/js/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
     <script th:each="jsFile : ${addScript}"
-            th:src="@{/front/js/${file}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
+            th:src="@{/front/js/{file}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
 
     <th:block layout:fragment="addScript"></th:block>
 </head>
 <body>
-    <header th:replace="~{front/outlines/header::common}"></header>
+<header th:replace="~{front/outlines/header::common}"></header>
 
-    <main layout:fragment="content"></main>
+<main layout:fragment="content"></main>
 
-    <footer th:replace="~{front/outlines/footer::common}"></footer>
+<footer th:replace="~{front/outlines/footer::common}"></footer>
 </body>
 </html>
