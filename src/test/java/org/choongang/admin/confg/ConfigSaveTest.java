@@ -1,4 +1,4 @@
-package org.choongang.admin.config;
+package org.choongang.admin.confg;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.choongang.admin.config.controllers.BasicConfig;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @Transactional
 @TestPropertySource(properties = "spring.profiles.active=test")
 public class ConfigSaveTest {
-    
+
     @Autowired
     private ConfigSaveService saveService;
-    
+
     @Autowired
     private ConfigInfoService infoService;
     
@@ -41,6 +41,7 @@ public class ConfigSaveTest {
         System.out.println(config2);
 
         Optional<Map<String, String>> opt = infoService.get("basic", new TypeReference<>() {});
+
         System.out.println(opt.get());
     }
 

@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Component
@@ -19,17 +20,17 @@ public class Utils {
     private final HttpServletRequest request;
     private final HttpSession session;
     private final FileInfoService fileInfoService;
+
     private static final ResourceBundle commonsBundle;
     private static final ResourceBundle validationsBundle;
     private static final ResourceBundle errorsBundle;
-    
-    // 객체를 만들지 않아도 클래스 로드 가능
+
     static {
         commonsBundle = ResourceBundle.getBundle("messages.commons");
         validationsBundle = ResourceBundle.getBundle("messages.validations");
         errorsBundle = ResourceBundle.getBundle("messages.errors");
     }
-    
+
     public boolean isMobile() {
         // 모바일 수동 전환 모드 체크
         String device = (String)session.getAttribute("device");
@@ -42,7 +43,7 @@ public class Utils {
 
         String pattern = ".*(iPhone|iPod|iPad|BlackBerry|Android|Windows CE|LG|MOT|SAMSUNG|SonyEricsson).*";
 
-        return ua.matches(pattern);
+       return ua.matches(pattern);
     }
 
     public String tpl(String path) {
@@ -50,65 +51,69 @@ public class Utils {
 
         return prefix + path;
     }
-    
+
     public static String getMessage(String code, String type) {
-         type = StringUtils.hasText(type) ? type : "validations";
+        type = StringUtils.hasText(type) ? type : "validations";
 
-         ResourceBundle bundle = null;
-         if (type.equals("commons")) {
-             bundle = commonsBundle;
-         } else if (type.equals("errors")) {
-             bundle = errorsBundle;
-         } else {
-             bundle = validationsBundle;
-         }
+        ResourceBundle bundle = null;
+        if (type.equals("commons")) {
+            bundle = commonsBundle;
+        } else if (type.equals("errors")) {
+            bundle = errorsBundle;
+        } else {
+            bundle = validationsBundle;
+        }
 
-         return bundle.getString(code);
+        return bundle.getString(code);
     }
 
-    public static String getMessage(String code){
+    public static String getMessage(String code) {
         return getMessage(code, null);
     }
 
     /**
-     * \n or \r\n -> <br>
+     * \n 또는 \r\n -> <br>
      * @param str
      * @return
      */
     public String nl2br(String str) {
-        str = str.replaceAll("\\n","<br>")
-                .replaceAll("\\r","");
+        str = Objects.requireNonNullElse(str, "");
+
+        str = str.replaceAll("\\n", "<br>")
+                .replaceAll("\\r", "");
+
         return str;
     }
 
     /**
      * 썸네일 이미지 사이즈 설정
+     *
      * @return
      */
     public List<int[]> getThumbSize() {
-        BasicConfig config = (BasicConfig) request.getAttribute("siteConfig");
-
-        String thumbSize = config.getThumbSize();
+        BasicConfig config = (BasicConfig)request.getAttribute("siteConfig");
+        String thumbSize = config.getThumbSize(); // \r\n
         String[] thumbsSize = thumbSize.split("\\n");
 
         List<int[]> data = Arrays.stream(thumbsSize)
                 .filter(StringUtils::hasText)
-                .map(s -> s.replaceAll("\\s", ""))
+                .map(s -> s.replaceAll("\\s+", ""))
                 .map(this::toConvert).toList();
+
 
         return data;
     }
 
     private int[] toConvert(String size) {
         size = size.trim();
-        int[] data = Arrays.stream(size.replaceAll("\\r","").toUpperCase().split("X")).mapToInt(Integer::parseInt).toArray();
+        int[] data = Arrays.stream(size.replaceAll("\\r", "").toUpperCase().split("X"))
+                .mapToInt(Integer::parseInt).toArray();
 
         return data;
     }
 
     public String printThumb(long seq, int width, int height, String className) {
         String[] data = fileInfoService.getThumb(seq, width, height);
-
         if (data != null) {
             String cls = StringUtils.hasText(className) ? " class='" + className + "'" : "";
             String image = String.format("<img src='%s'%s>", data[1], cls);
@@ -122,34 +127,3 @@ public class Utils {
         return printThumb(seq, width, height, null);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@ public class ThumbnailTest {
 
     @Test
     void getThumbTest() {
-        String[] data = infoService.getThumb(452L, 500, 500);
+        String[] data = infoService.getThumb(502L, 250, 250);
         System.out.println(Arrays.toString(data));
     }
 }

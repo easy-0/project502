@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public interface ExceptionRestProcessor {
     @ExceptionHandler(Exception.class)
     default ResponseEntity<JSONData<Object>> errorHandler(Exception e) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;  // 500
-        if(e instanceof CommonException) {
+
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 500
+        if (e instanceof CommonException) {
             CommonException commonException = (CommonException)e;
             status = commonException.getStatus();
         }

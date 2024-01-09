@@ -22,20 +22,18 @@ public class MemberUtil {
 
         return false;
     }
-    
-    /* 로그인 여부 확인 */
+
     public boolean isLogin() {
+
         return getMember() != null;
     }
-    
-    /* 세션에 member가 있으면 member 반환 */
+
     public Member getMember() {
         Member member = (Member) session.getAttribute("member");
-        
-        return  member;
+
+        return member;
     }
 
-    /* 로그인시 세션 비우기 */
     public static void clearLoginData(HttpSession session) {
         session.removeAttribute("username");
         session.removeAttribute("NotBlank_username");

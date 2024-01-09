@@ -17,6 +17,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class CommonInterceptor implements HandlerInterceptor {
     private final ConfigInfoService infoService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -45,10 +46,6 @@ public class CommonInterceptor implements HandlerInterceptor {
         session.setAttribute("device", device);
     }
 
-    /**
-     * 경로에 "/member/login"이 있으면 세션을 비워서
-     * @param request
-     */
     private void clearLoginData(HttpServletRequest request) {
         String URL = request.getRequestURI();
         if (URL.indexOf("/member/login") == -1) {
@@ -58,7 +55,7 @@ public class CommonInterceptor implements HandlerInterceptor {
     }
 
     private void loadSiteConfig(HttpServletRequest request) {
-        String[] excludes = {".js", ".css", ".png", ".jpg", ".jpeg", "gif", ".pdf", "xls", "xlxs", "pptx"};
+        String[] excludes = {".js", ".css", ".png", ".jpg", ".jpeg", "gif", ".pdf", ".xls", ".xlxs", ".ppt"};
 
         String URL = request.getRequestURI().toLowerCase();
 
@@ -67,7 +64,8 @@ public class CommonInterceptor implements HandlerInterceptor {
             return;
         }
 
-        BasicConfig config = infoService.get("basic", BasicConfig.class).orElseGet(BasicConfig::new);
+        BasicConfig config = infoService.get("basic", BasicConfig.class)
+                .orElseGet(BasicConfig::new);
 
         request.setAttribute("siteConfig", config);
     }

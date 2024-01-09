@@ -13,6 +13,5 @@ public class BoardData extends BaseMember {
     private Long seq;
 
     private String subject;
-
     private String content;
 }

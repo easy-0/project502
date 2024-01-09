@@ -35,6 +35,7 @@ public class BasicConfigController implements ExceptionProcessor {
         BasicConfig config = infoService.get("basic", BasicConfig.class).orElseGet(BasicConfig::new);
 
         model.addAttribute("basicConfig", config);
+
         return "admin/config/basic";
     }
 
