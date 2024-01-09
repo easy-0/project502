@@ -13,8 +13,9 @@ import org.springframework.validation.Validator;
 public class JoinValidator implements Validator, PasswordValidator {
 
     private final MemberRepository memberRepository;
+
     @Override
-    public boolean supports(Class<?> clazz) {   // 검증 객체 한정
+    public boolean supports(Class<?> clazz) {
         return clazz.isAssignableFrom(RequestJoin.class);
     }
 
@@ -22,7 +23,7 @@ public class JoinValidator implements Validator, PasswordValidator {
     public void validate(Object target, Errors errors) {
         /**
          * 1. 이메일, 아이디 중복 여부 체크
-         * 2. 비밀번호 복잡성 체크 - 대소문자, 숫자, 특수문자 각 1개 이상 포함
+         * 2. 비밀번호 복잡성 체크 - 대소문자 1개 각각 포함, 숫자 1개 이상 포함, 특수문자도 1개 이상 포함
          * 3. 비밀번호, 비밀번호 확인 일치 여부 체크
          */
 
@@ -41,18 +42,16 @@ public class JoinValidator implements Validator, PasswordValidator {
             errors.rejectValue("userId", "Duplicated");
         }
 
-        // 2. 비밀번호 복잡성 체크 - 대소문자, 숫자, 특수문자 각 1개 이상 포함
+        // 2. 비밀번호 복잡성 체크 - 대소문자 1개 각각 포함, 숫자 1개 이상 포함, 특수문자도 1개 이상 포함
         if (StringUtils.hasText(password) &&
                 (!alphaCheck(password, true) || !numberCheck(password) || !specialCharsCheck(password))) {
-            errors.rejectValue("password","Complexity");
+            errors.rejectValue("password", "Complexity");
         }
-
 
         // 3. 비밀번호, 비밀번호 확인 일치 여부 체크
         if (StringUtils.hasText(password) && StringUtils.hasText(confirmPassword)
-        && !password.equals(confirmPassword)) {
-            errors.rejectValue("confirmPassword","Mismatch.password");
+            && !password.equals(confirmPassword)) {
+            errors.rejectValue("confirmPassword", "Mismatch.password");
         }
-
     }
 }

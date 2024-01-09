@@ -30,7 +30,9 @@ public class FileInfoService {
     private final HttpServletRequest request;
 
     public FileInfo get(Long seq) {
-        FileInfo fileInfo = repository.findById(seq).orElseThrow(FileNotFoundException::new);
+        FileInfo fileInfo = repository.findById(seq)
+                            .orElseThrow(FileNotFoundException::new);
+
 
         addFileInfo(fileInfo); // 파일 추가 정보 처리
 
@@ -39,6 +41,7 @@ public class FileInfoService {
 
     /**
      * 파일 목록 조회
+     *
      * @param gid
      * @param location
      * @param mode - ALL : 기본값 - 완료, 미완료 모두 조회
@@ -53,6 +56,7 @@ public class FileInfoService {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(fileInfo.gid.eq(gid));
+
         if (StringUtils.hasText(location)) {
             builder.and(fileInfo.location.eq(location));
         }
@@ -61,7 +65,7 @@ public class FileInfoService {
             builder.and(fileInfo.done.eq(mode.equals("DONE")));
         }
 
-        List<FileInfo> items = (List<FileInfo>) repository.findAll(builder, Sort.by(asc("createdAt")));
+        List<FileInfo> items = (List<FileInfo>)repository.findAll(builder, Sort.by(asc("createdAt")));
 
         items.forEach(this::addFileInfo);
 
@@ -77,7 +81,7 @@ public class FileInfoService {
     }
 
     public List<FileInfo> getListDone(String gid) {
-        return getList(gid,null, "DONE");
+        return getList(gid, null, "DONE");
     }
 
     public List<FileInfo> getListDone(String gid, String location) {
@@ -93,7 +97,6 @@ public class FileInfoService {
     public void addFileInfo(FileInfo fileInfo) {
         long seq = fileInfo.getSeq();
         long dir = seq % 10L;
-
         String fileName = seq + fileInfo.getExtension();
 
         /* 파일 경로, URL S */
@@ -102,7 +105,6 @@ public class FileInfoService {
 
         fileInfo.setFilePath(filePath);
         fileInfo.setFileUrl(fileUrl);
-
         /* 파일 경로, URL E */
 
         /* 썸네일 경로, URL S */
@@ -122,13 +124,20 @@ public class FileInfoService {
 
         fileInfo.setThumbsPath(thumbsPath);
         fileInfo.setThumbsUrl(thumbsUrl);
-
-        /* 썸네일 경로, URL E */
-
+        /* 썸네일 경로, URL E*/
     }
+
+    /**
+     * 파일별 특정 사이즈 썸네일 조회
+     *
+     * @param seq
+     * @param width
+     * @param height
+     * @return
+     */
     public String[] getThumb(long seq, int width, int height) {
         FileInfo fileInfo = get(seq);
-        String fileType = fileInfo.getFileType();
+        String fileType = fileInfo.getFileType(); // 파일이 이미지인지 체크
         if (fileType.indexOf("image/") == -1) {
             return null;
         }
@@ -159,12 +168,12 @@ public class FileInfoService {
     }
 
     public String getThumbDir(long seq) {
+
         String thumbDirCommon = "thumbs/" + (seq % 10L) + "/" + seq;
         return fileProperties.getPath() + thumbDirCommon;
     }
 
     public String getThumbUrl(long seq) {
-
         String thumbDirCommon = "thumbs/" + (seq % 10L) + "/" + seq;
         return fileProperties.getUrl() + thumbDirCommon;
     }

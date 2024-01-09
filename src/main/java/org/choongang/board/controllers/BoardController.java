@@ -20,20 +20,21 @@ public class BoardController {
     public void test() {
         BoardData data = boardDataRepository.findById(1L).orElse(null);
         data.setSubject("(수정)제목");
-        boardDataRepository.saveAndFlush(data);
+        boardDataRepository.flush();
 
-        /*BoardData data = new BoardData();
+        /*
+        BoardData data = new BoardData();
         data.setSubject("제목");
         data.setContent("내용");
-        boardDataRepository.saveAndFlush(data);*/
+        boardDataRepository.saveAndFlush(data);
+         */
     }
 
     @ResponseBody
     @GetMapping("/test2")
     @PreAuthorize("hasAuthority('ADMIN')")
-    //@Secured({"ADMIN", "MANAGER"})  // ROLE 권한만 설정
+    //@Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public void test2() {
         System.out.println("test2!!!");
     }
-
 }

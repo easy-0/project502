@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ConfigSaveService {
     private final ConfigsRepository repository;
-    
+
     public void save(String code, Object data) {
-        Configs configs = repository.findById(code).orElseGet(Configs::new);    // 조회하여 영속성 데이터가 있으면 수정, 없으면 생성
+        Configs configs = repository.findById(code).orElseGet(Configs::new);
 
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());

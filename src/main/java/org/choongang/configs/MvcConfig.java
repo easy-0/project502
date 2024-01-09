@@ -38,7 +38,7 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public HiddenHttpMethodFilter httpMethodFilter() {  // form에서 _method를 사용하여 get post 말고 다른 방식으로 전송 가능.
+    public HiddenHttpMethodFilter httpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
 }

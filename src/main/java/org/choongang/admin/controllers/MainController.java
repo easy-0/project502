@@ -13,7 +13,4 @@ public class MainController implements ExceptionProcessor {
     public String index() {
         return "admin/main/index";
     }
-
-
-
 }

@@ -7,10 +7,11 @@ spring:
     multipart:
       maxFileSize: 20MB
       maxRequestSize: 60MB
+
   # 데이터베이스 설정
   datasource:
     driverClassName: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@43.201.216.186:1521:xe
+    url: jdbc:oracle:thin:@13.124.196.150:1521:xe
     username: PROJECT
     password: _aA123456
 
@@ -30,7 +31,6 @@ spring:
     cache: true
     prefix: classpath:/templates/
 
-
 # 로거 설정
 logging:
   level:
@@ -39,6 +39,7 @@ logging:
         type:
           descriptor:
             sql: trace
+
 
 # 파일 업로드 경로 설정
 file:

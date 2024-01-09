@@ -23,7 +23,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Member member = memberInfo.getMember();
         session.setAttribute("member", member);
 
-        // parameter 값이 있으면 해당 경로로
         String redirectURL = request.getParameter("redirectURL");
         redirectURL = StringUtils.hasText(redirectURL) ? redirectURL : "/";
 

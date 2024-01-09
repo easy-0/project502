@@ -9,20 +9,22 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, QuerydslPredicateExecutor<Member> {
-    // 즉시 로딩
+
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findByEmail(String email);
-    
+
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findByUserId(String userId);
 
     default boolean existsByEmail(String email) {
         QMember member = QMember.member;
+
         return exists(member.email.eq(email));
     }
 
     default boolean existsByUserId(String userId) {
         QMember member = QMember.member;
+
         return exists(member.userId.eq(userId));
     }
 }
